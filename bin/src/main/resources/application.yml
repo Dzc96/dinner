@@ -1,0 +1,40 @@
+server:
+  port: 8909
+mybatis:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: mapper/*.xml
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/lxb?useUnicode=true&characterEncoding=utf8
+    username: root
+    password: root
+    initialSize: 1
+    minIdle: 3
+    maxActive: 20
+    # ���û�ȡ���ӵȴ���ʱ��ʱ��
+    maxWait: 60000
+    # ���ü����òŽ���һ�μ�⣬�����Ҫ�رյĿ������ӣ���λ�Ǻ���
+    timeBetweenEvictionRunsMillis: 60000
+    # ����һ�������ڳ�����С�����ʱ�䣬��λ�Ǻ���
+    minEvictableIdleTimeMillis: 30000
+    validationQuery: select 'x'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    # ��PSCache������ָ��ÿ��������PSCache�Ĵ�С
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    # ���ü��ͳ�����ص�filters��ȥ�����ؽ���sql�޷�ͳ�ƣ�'wall'���ڷ���ǽ
+    filters: stat,wall,slf4j
+    # ͨ��connectProperties��������mergeSql���ܣ���SQL��¼
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+    # �ϲ����DruidDataSource�ļ������
+    #useGlobalDataSourceStat: true
+pagehelper:
+  helper-dialect: mysql
+  reasonable: true
+  support-methods-arguments: true
+  params: count=countSql
