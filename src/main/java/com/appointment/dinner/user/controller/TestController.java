@@ -209,11 +209,12 @@ public class TestController {
         return new R<>("成功了，fuckyou");
     }
 
+
+
     @GetMapping("/fuck1")
-    public R<String> getccc1(@PathVariable("userId")Long userId){
+    public R<String> getccc1(){
         return new R<>("成功了，fuckyou1");
     }
-
 
 
 
