@@ -204,5 +204,13 @@ public class TestController {
 
 
 
+    @GetMapping("/fuck")
+    public R<String> getccc(@PathVariable("userId")Long userId){
+        return new R<>("成功了，fuckyou");
+    }
+
+
+
+
 
 }
