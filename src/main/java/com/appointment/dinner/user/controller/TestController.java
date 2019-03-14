@@ -266,14 +266,13 @@ public class TestController {
 
 
 
-    @PostMapping("/app/img/uploadmany")
-    public R<String> uploadImgmany(HttpServletRequest request) {
+    @PostMapping("/app/img/uploadmany222")
+    public R<String> uploadImgmany222(HttpServletRequest request) {
         MultiValueMap<String, MultipartFile> multiRequest  = ((MultipartHttpServletRequest) request).getMultiFileMap();
         List<MultipartFile> fileSet = new LinkedList<>();
         for (Map.Entry<String, List<MultipartFile>> temp : multiRequest.entrySet()) {
             fileSet = temp.getValue();
         }
-
 
         //temp拿到的应该就是每一个文件
         for(MultipartFile temp : fileSet){
@@ -301,5 +300,41 @@ public class TestController {
 
         return new R<String>("图片上传成功！fuck you!");
     }
+
+
+
+    @PostMapping("/app/img/uploadmany")
+    public R<String> uploadImgmany(MultipartFile[] files, HttpServletRequest request) {
+       logger.info("文件的个数是：" + files.length + "个");
+       if (files.length > 0) {
+            for (MultipartFile file : files) {
+                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                String date = df.format(new Date());
+                String path = "/var/uploaded_files/" + date + "/";
+                UUID uuid = UUID.randomUUID();
+                String originalFilename = file.getOriginalFilename();//------API
+                String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+                String fileName = uuid.toString() + extendName;
+                //创建一个文件
+                File dir = new File(path, fileName);
+                //创建文件路径
+                File filepath = new File(path);
+                if (!filepath.exists()) {
+                    filepath.mkdirs();
+                }
+                try {
+                    file.transferTo(dir);//MultipartFile的内置方法transferTo()
+                } catch (Exception e) {
+                    logger.info(e.getMessage());
+                    return new R<>(e);
+                }
+            }
+            return new R<>("上传图片成功！！！！！！！！！！！！！！！！！！！！！！！！");
+       }
+
+        return new R<String>(new Exception("上传失败fuckyou!!!!!!!!"));
+    }
+
+
 
 }
