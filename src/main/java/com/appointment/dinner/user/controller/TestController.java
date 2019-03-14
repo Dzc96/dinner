@@ -177,49 +177,16 @@ public class TestController {
     }
 
 
-    /**
-     * 这里稍作修改就可以了
-     * @param request
-     * @param response
-     * @return
-     */
+
+
+
+
     @PostMapping("/app/img/upload")
-    public R<String> picture (HttpServletRequest request, HttpServletResponse response) {
-        //创建一个临时文件存放要上传的文件，第一个参数为上传文件大小，第二个参数为存放的临时目录
-        DiskFileItemFactory factory = new DiskFileItemFactory(1024*1024*5,new File("D:\\temp1"));
-        // 设置缓冲区大小为 5M
-        factory.setSizeThreshold(1024 * 1024 * 5);
-        // 创建一个文件上传的句柄
-        ServletFileUpload upload = new ServletFileUpload(factory);
-
-        //设置上传文件的整个大小和上传的单个文件大小
-        upload.setSizeMax(1024*1024*50);
-        upload.setFileSizeMax(1024*1024*5);
-        String[] fileExts = {"doc","zip","rar","jpg","txt"};
-
-
+    public R<String> uploadImg() {
 
         return null;
     }
 
-
-
-    @GetMapping("/fuck")
-    public R<String> getccc(@PathVariable("userId")Long userId){
-        return new R<>("成功了，fuckyou");
-    }
-
-
-
-    @GetMapping("/fuck1")
-    public R<String> getccc1(){
-        return new R<>("成功了，fuckyou1");
-    }
-
-    @GetMapping("/fuck2")
-    public R<String> getccc2(){
-        return new R<>("3月14日测试成功");
-    }
 
 
 }

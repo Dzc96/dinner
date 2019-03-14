@@ -11,20 +11,23 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/lxb?useUnicode=true&characterEncoding=utf8
     username: root
     password: root
+    # 初始化连接
     initialSize: 1
+    # 连接池最小连接数
     minIdle: 3
+    # 连接池最大连接数
     maxActive: 20
-    # ���û�ȡ���ӵȴ���ʱ��ʱ��
+    # 从连接池中获取连接时的最大等待时间，单位是毫秒
     maxWait: 60000
-    # ���ü����òŽ���һ�μ�⣬�����Ҫ�رյĿ������ӣ���λ�Ǻ���
+    # 60秒运行一次空闲连接回收器
     timeBetweenEvictionRunsMillis: 60000
-    # ����һ�������ڳ�����С�����ʱ�䣬��λ�Ǻ���
+    # 连接池中的连接空闲30秒后被回收
     minEvictableIdleTimeMillis: 30000
     validationQuery: select 'x'
     testWhileIdle: true
     testOnBorrow: false
     testOnReturn: false
-    # ��PSCache������ָ��ÿ��������PSCache�Ĵ�С
+    # 是否缓存preparedStatement，即PSCache，对支持游标的数据库性能提升巨大(例如oracle)，MySQL下建议关闭
     poolPreparedStatements: true
     maxPoolPreparedStatementPerConnectionSize: 20
     # ���ü��ͳ�����ص�filters��ȥ�����ؽ���sql�޷�ͳ�ƣ�'wall'���ڷ���ǽ
@@ -38,3 +41,4 @@ pagehelper:
   reasonable: true
   support-methods-arguments: true
   params: count=countSql
+

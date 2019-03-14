@@ -27,19 +27,19 @@ public class JsonUtil {
 		mapper = new ObjectMapper();
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 	}
-	
+
 	private JsonUtil() {
-		super();
-	}
-	
-	public static <T> T jsonToObject(String json, Class<T> clazz) {
-		T object = null;
-		try {
-			object = mapper.readValue(json, clazz);
-		} catch (IOException e) {
-			e.printStackTrace();
+			super();
 		}
-		return object;
+
+		public static <T> T jsonToObject(String json, Class<T> clazz) {
+			T object = null;
+			try {
+				object = mapper.readValue(json, clazz);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return object;
 	}
 	
 	public static <T> String objectToJson(T object) {
