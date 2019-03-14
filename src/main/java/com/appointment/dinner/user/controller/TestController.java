@@ -20,8 +20,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @Author Tony
@@ -182,9 +185,32 @@ public class TestController {
 
 
     @PostMapping("/app/img/upload")
-    public R<String> uploadImg() {
+    public R<String> uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-        return null;
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String date = df.format(new Date());
+            String path = "/var/uploaded_files/"+date+"/";
+            UUID uuid = UUID.randomUUID();
+            String originalFilename = file.getOriginalFilename();//------API
+            String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+            String fileName = uuid.toString() + extendName;
+            File dir = new File(path, fileName);
+            File filepath = new File(path);
+            if(!filepath.exists()){
+                filepath.mkdirs();
+            }
+
+            file.transferTo(dir);//-----API
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new R<>("上传图片失败");
+        }
+
+        return new R<String>("图片上传成功！fuck you!");
+
+
     }
 
 

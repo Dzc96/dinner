@@ -19,7 +19,7 @@ public class HelloServer {
 
     private static final int portNumber = 8888;
     public static void main(String[] args) throws InterruptedException {
-        EventLoopGroup boosGroup = new NioEventLoopGroup();
+             EventLoopGroup boosGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
         try {
