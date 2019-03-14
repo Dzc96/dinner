@@ -21,5 +21,7 @@ public interface TestService {
 
     SysUser getUserByUser(SysUser sysUser);
 
+    int addUser(SysUser sysUser);
+
 }
 

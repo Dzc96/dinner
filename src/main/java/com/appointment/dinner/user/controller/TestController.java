@@ -331,7 +331,6 @@ public class TestController {
             }
             return new R<>("上传图片成功！！！！！！！！！！！！！！！！！！！！！！！！");
        }
-
         return new R<String>(new Exception("上传失败fuckyou!!!!!!!!"));
     }
 

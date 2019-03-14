@@ -52,5 +52,11 @@ public class TestServiceImpl implements TestService {
         return user;
     }
 
+    @Override
+    public int addUser(SysUser sysUser) {
+        int insert_number = sysUserMapper.insert(sysUser);
+        return insert_number;
+    }
+
 
 }
