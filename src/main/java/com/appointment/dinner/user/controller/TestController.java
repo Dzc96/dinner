@@ -185,9 +185,13 @@ public class TestController {
 
 
     @PostMapping("/app/img/upload")
-    public R<String> uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public R<String> uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
 
         try {
+            if (file == null) {
+                logger.info("文件为空！");
+            }
+
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String date = df.format(new Date());
             String path = "/var/uploaded_files/"+date+"/";
