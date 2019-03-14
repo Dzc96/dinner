@@ -9,7 +9,9 @@ import javax.xml.crypto.Data;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import org.springframework.stereotype.Component;
 
+@Component
 public class HelloServerHandler extends     SimpleChannelInboundHandler<String> {
 
     @Override
