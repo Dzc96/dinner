@@ -185,7 +185,7 @@ public class TestController {
 
 
     @PostMapping("/app/img/upload")
-    public R<String> uploadImg(MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
+    public R<String> uploadImg(@RequestParam(value="fuck0") MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
 
         try {
             if (file == null) {
