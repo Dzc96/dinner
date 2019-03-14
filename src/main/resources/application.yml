@@ -37,9 +37,9 @@ spring:
     # �ϲ����DruidDataSource�ļ������
     #useGlobalDataSourceStat: true
   servlet:
-    multipart:
-      max-file-size: 10MB
-      max-request-size: 200MB
+  multipart:
+    max-file-size: 10MB
+    max-request-size: 200MB
 
 pagehelper:
   helper-dialect: mysql

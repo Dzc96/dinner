@@ -188,7 +188,7 @@ public class TestController {
     public R<String> uploadImg(@RequestParam(value="fuck0") MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
 
         try {
-            if (file == null) {
+            if (file.isEmpty()) {
                 logger.info("文件为空！");
             }
 
@@ -199,7 +199,9 @@ public class TestController {
             String originalFilename = file.getOriginalFilename();//------API
             String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
             String fileName = uuid.toString() + extendName;
+            //创建一个文件
             File dir = new File(path, fileName);
+            //创建文件路径
             File filepath = new File(path);
             if(!filepath.exists()){
                 filepath.mkdirs();
