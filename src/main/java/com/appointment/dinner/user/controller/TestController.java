@@ -15,11 +15,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.multipart.MultipartRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -207,7 +211,7 @@ public class TestController {
                 filepath.mkdirs();
             }
 
-            file.transferTo(dir);//-----API
+            file.transferTo(dir);//MultipartFile的内置方法transferTo()
 
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -220,47 +224,35 @@ public class TestController {
 
     /**
      * 测试多图片上传
-     * @param filelist
-     * @param request
-     * @param response
+     *
      * @return
      */
     @PostMapping("/app/img/uploadmany")
-    public R<String> uploadImgmany(@RequestParam(value="fuck0") List<MultipartFile> filelist, HttpServletRequest request, HttpServletResponse response)  {
-
-        try {
-            List<MultipartFile> files = filelist;
+    public R<String> uploadImgmany(HttpServletRequest request)  {
+            List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("fuck0");
             MultipartFile file = null;
-            for (int i = 0; i < files.size(); i++) {
-                file = files.get(i);
-                if (!file.isEmpty()) {
+            BufferedOutputStream stream = null;
+
+        for (int i = 0; i <files.size() ; i++) {
+            if (!file.isEmpty()) {
+                try {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     String date = df.format(new Date());
                     String path = "/var/uploaded_files/"+date+"/";
-                    UUID uuid = UUID.randomUUID();
-                    String originalFilename = file.getOriginalFilename();//------API
-                    String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
-                    String fileName = uuid.toString() + extendName;
-                    //创建一个文件
-                    File dir = new File(path, fileName);
-                    //创建文件路径
-                    File filepath = new File(path);
-                    if(!filepath.exists()){
-                        filepath.mkdirs();
-                    }
+                    byte[] bytes = file.getBytes();
 
-                    file.transferTo(dir);//-----API
+                    stream = new BufferedOutputStream(new FileOutputStream(new File(path, file.getOriginalFilename())));
+                    stream.write(bytes);
+                    stream.close();
+
+                } catch (Exception e) {
+                    logger.info(e.getMessage());
+                    return new R<>(e);
                 }
             }
-
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return new R<>(e);
         }
 
         return new R<String>("图片上传成功！fuck you!");
-
-
     }
 
 
