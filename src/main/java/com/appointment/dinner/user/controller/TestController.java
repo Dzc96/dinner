@@ -215,9 +215,55 @@ public class TestController {
         }
 
         return new R<String>("图片上传成功！fuck you!");
+    }
+
+
+    /**
+     * 测试多图片上传
+     * @param filelist
+     * @param request
+     * @param response
+     * @return
+     */
+    @PostMapping("/app/img/uploadmany")
+    public R<String> uploadImgmany(@RequestParam(value="fuck0") List<MultipartFile> filelist, HttpServletRequest request, HttpServletResponse response)  {
+
+        try {
+            List<MultipartFile> files = filelist;
+            MultipartFile file = null;
+            for (int i = 0; i < files.size(); i++) {
+                file = files.get(i);
+                if (!file.isEmpty()) {
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String date = df.format(new Date());
+                    String path = "/var/uploaded_files/"+date+"/";
+                    UUID uuid = UUID.randomUUID();
+                    String originalFilename = file.getOriginalFilename();//------API
+                    String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+                    String fileName = uuid.toString() + extendName;
+                    //创建一个文件
+                    File dir = new File(path, fileName);
+                    //创建文件路径
+                    File filepath = new File(path);
+                    if(!filepath.exists()){
+                        filepath.mkdirs();
+                    }
+
+                    file.transferTo(dir);//-----API
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return new R<>(e);
+        }
+
+        return new R<String>("图片上传成功！fuck you!");
 
 
     }
+
+
 
 
 
