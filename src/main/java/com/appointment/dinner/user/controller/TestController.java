@@ -234,6 +234,7 @@ public class TestController {
             BufferedOutputStream stream = null;
 
         for (int i = 0; i <files.size() ; i++) {
+            file = files.get(i);
             if (!file.isEmpty()) {
                 try {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
