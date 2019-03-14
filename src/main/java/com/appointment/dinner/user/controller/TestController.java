@@ -13,6 +13,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -25,10 +26,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @Author Tony
@@ -224,16 +222,16 @@ public class TestController {
      *
      * @return
      */
-    @PostMapping("/app/img/uploadmany")
-    public R<String> uploadImgmany(HttpServletRequest request) {
+    @PostMapping("/app/img/uploadmany111")
+    public R<String> uploadImgmany111(HttpServletRequest request) {
         List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("fuck0");
-        logger.info("-----------------------");
-        logger.info("这是files数组的长度:" + files.size());
-        logger.info("-----------------------");
+//        logger.info("-----------------------");
+//        logger.info("这是files数组的长度:" + files.size());
+//        logger.info("-----------------------");
         for (int i = 0; i < files.size(); i++) {
-            logger.info("-----------------------");
-            logger.info("这是第" + i + "张照片");
-            logger.info("-----------------------");
+//            logger.info("-----------------------");
+//            logger.info("这是第" + i + "张照片");
+//            logger.info("-----------------------");
             MultipartFile file = files.get(i);
             if (!file.isEmpty()) {
                 try {
@@ -266,5 +264,42 @@ public class TestController {
         return new R<String>("图片上传成功！fuck you!");
     }
 
+
+
+    @PostMapping("/app/img/uploadmany")
+    public R<String> uploadImgmany(HttpServletRequest request) {
+        MultiValueMap<String, MultipartFile> multiRequest  = ((MultipartHttpServletRequest) request).getMultiFileMap();
+        List<MultipartFile> fileSet = new LinkedList<>();
+        for (Map.Entry<String, List<MultipartFile>> temp : multiRequest.entrySet()) {
+            fileSet = temp.getValue();
+        }
+
+
+        //temp拿到的应该就是每一个文件
+        for(MultipartFile temp : fileSet){
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String date = df.format(new Date());
+            String path = "/var/uploaded_files/" + date + "/";
+            UUID uuid = UUID.randomUUID();
+            String originalFilename = temp.getOriginalFilename();//------API
+            String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+            String fileName = uuid.toString() + extendName;
+            //创建一个文件
+            File dir = new File(path, fileName);
+            //创建文件路径
+            File filepath = new File(path);
+            if (!filepath.exists()) {
+                filepath.mkdirs();
+            }
+            try {
+                temp.transferTo(dir);//MultipartFile的内置方法transferTo()
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+                return new R<>(e);
+            }
+        }
+
+        return new R<String>("图片上传成功！fuck you!");
+    }
 
 }
