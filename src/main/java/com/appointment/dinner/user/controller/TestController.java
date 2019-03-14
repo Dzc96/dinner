@@ -304,7 +304,7 @@ public class TestController {
 
 
     @PostMapping("/app/img/uploadmany")
-    public R<String> uploadImgmany(MultipartFile[] files, HttpServletRequest request) {
+    public R<String> uploadImgmany(@RequestParam(value = "files") MultipartFile[] files, HttpServletRequest request) {
        logger.info("文件的个数是：" + files.length + "个");
        if (files.length > 0) {
             for (MultipartFile file : files) {
