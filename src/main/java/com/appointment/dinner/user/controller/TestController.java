@@ -40,51 +40,51 @@ public class TestController {
     private static Logger logger = LoggerFactory.getLogger(TestController.class);
 
     /**
-     *  /user/{userId}   HTTP1.1 8 get  post  delete  put
+     * /user/{userId}   HTTP1.1 8 get  post  delete  put
      */
     @Autowired
     private TestService testService;
 
     @GetMapping("/v1/{userId}")
-    public R<SysUser> getUserById(@PathVariable("userId")Long userId){
+    public R<SysUser> getUserById(@PathVariable("userId") Long userId) {
         return new R<>(testService.getUserById(userId));
     }
 
 
-
     @GetMapping("/v1/list")
-    public R<List<SysUser>> list(){
+    public R<List<SysUser>> list() {
         return new R<>(testService.getUserList());
     }
 
     @GetMapping("/v1/pages")
-    public R<PageVO<SysUser>> pages(@RequestParam(value = "offset",defaultValue = "1")int offset,
-                                    @RequestParam(value = "limit",defaultValue = "10")int limit){
-        return new R<>(new PageVO<>(testService.getUserPages(offset,limit)));
+    public R<PageVO<SysUser>> pages(@RequestParam(value = "offset", defaultValue = "1") int offset,
+                                    @RequestParam(value = "limit", defaultValue = "10") int limit) {
+        return new R<>(new PageVO<>(testService.getUserPages(offset, limit)));
     }
 
     @PutMapping("/v1")
-    public R<String> updateUser(@Valid @RequestBody SysUser sysUser){
+    public R<String> updateUser(@Valid @RequestBody SysUser sysUser) {
         int i = testService.updateUser(sysUser);
-        if(i>0){
+        if (i > 0) {
             return new R<>("更新成功");
-        }else{
+        } else {
             return new R<>(new LogicalVerificationException("更新失败"));
         }
     }
 
     @DeleteMapping("/v1/{userId}")
-    public R<String> deleteUser(@PathVariable("userId")Long userId){
+    public R<String> deleteUser(@PathVariable("userId") Long userId) {
         int i = testService.deleteUserById(userId);
-        if(i>0){
+        if (i > 0) {
             return new R<>("删除成功");
-        }else{
+        } else {
             return new R<>(new LogicalVerificationException("删除失败"));
         }
     }
 
     /**
      * 这是处理非json参数的方法，这里的参数属于http的body部分，即请求报文的请求体，不是url后面的参数
+     *
      * @param username
      * @param password
      * @return
@@ -99,7 +99,7 @@ public class TestController {
         SysUser sysUser = new SysUser();
         sysUser.setName(username);
         sysUser.setPassword(password);
-        SysUser user =  testService.getUserByUser(sysUser);
+        SysUser user = testService.getUserByUser(sysUser);
         if (user != null) {
             return new R<>("登陆成功");
         } else {
@@ -110,12 +110,13 @@ public class TestController {
 
     /**
      * 这是处理json参数的方法，这里的参数依然是http请求报文的请求体部分body
+     *
      * @param sysUser
      * @return
      */
     @PostMapping("/app/verifyMsgCode222")
     public R<String> login222(@RequestBody SysUser sysUser) {
-        SysUser user =  testService.getUserByUser(sysUser);
+        SysUser user = testService.getUserByUser(sysUser);
         System.out.println("--------------------");
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
@@ -128,10 +129,9 @@ public class TestController {
     }
 
 
-
     @PostMapping("/app/verifyMsgCode")
     public R<String> login(SysUser sysUser) {
-        SysUser user =  testService.getUserByUser(sysUser);
+        SysUser user = testService.getUserByUser(sysUser);
         System.out.println("--------------------");
         System.out.println(user.getUsername());
         System.out.println(user.getPassword());
@@ -146,7 +146,7 @@ public class TestController {
 
 
     @PostMapping("/app/verifyMsgCheck")
-    public R<String> verifyMsgCheck (@RequestParam String phoneNumber, @RequestParam String verification) {
+    public R<String> verifyMsgCheck(@RequestParam String phoneNumber, @RequestParam String verification) {
         if (phoneNumber != null & verification != null) {
             return new R<>("短信验证成功");
         }
@@ -155,12 +155,13 @@ public class TestController {
 
     /**
      * 把MultipartFile转成File进行保存
+     *
      * @param image
      * @param request
      * @return
      */
     @PostMapping("/app/img/upload111")
-    public R<String> picture111 (@RequestParam MultipartFile image, HttpServletRequest request) {
+    public R<String> picture111(@RequestParam MultipartFile image, HttpServletRequest request) {
         if (image.isEmpty() || StringUtils.isBlank(image.getOriginalFilename())) {
             return new R<>(new Exception("上传图片错误！"));
         }
@@ -184,12 +185,8 @@ public class TestController {
     }
 
 
-
-
-
-
     @PostMapping("/app/img/upload")
-    public R<String> uploadImg(@RequestParam(value="fuck0") MultipartFile file, HttpServletRequest request, HttpServletResponse response)  {
+    public R<String> uploadImg(@RequestParam(value = "fuck0") MultipartFile file, HttpServletRequest request, HttpServletResponse response) {
 
         try {
             if (file.isEmpty()) {
@@ -198,7 +195,7 @@ public class TestController {
 
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String date = df.format(new Date());
-            String path = "/var/uploaded_files/"+date+"/";
+            String path = "/var/uploaded_files/" + date + "/";
             UUID uuid = UUID.randomUUID();
             String originalFilename = file.getOriginalFilename();//------API
             String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
@@ -207,7 +204,7 @@ public class TestController {
             File dir = new File(path, fileName);
             //创建文件路径
             File filepath = new File(path);
-            if(!filepath.exists()){
+            if (!filepath.exists()) {
                 filepath.mkdirs();
             }
 
@@ -228,18 +225,21 @@ public class TestController {
      * @return
      */
     @PostMapping("/app/img/uploadmany")
-    public R<String> uploadImgmany(HttpServletRequest request)  {
-            List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("fuck0");
-            MultipartFile file = null;
-            BufferedOutputStream stream = null;
-
-        for (int i = 0; i <files.size() ; i++) {
-            file = files.get(i);
+    public R<String> uploadImgmany(HttpServletRequest request) {
+        List<MultipartFile> files = ((MultipartHttpServletRequest) request).getFiles("fuck0");
+        logger.info("-----------------------");
+        logger.info("这是files数组的长度:" + files.size());
+        logger.info("-----------------------");
+        for (int i = 0; i < files.size(); i++) {
+            logger.info("-----------------------");
+            logger.info("这是第" + i + "张照片");
+            logger.info("-----------------------");
+            MultipartFile file = files.get(i);
             if (!file.isEmpty()) {
                 try {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     String date = df.format(new Date());
-                    String path = "/var/uploaded_files/"+date+"/";
+                    String path = "/var/uploaded_files/" + date + "/";
                     UUID uuid = UUID.randomUUID();
                     String originalFilename = file.getOriginalFilename();//------API
                     String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
@@ -248,7 +248,7 @@ public class TestController {
                     File dir = new File(path, fileName);
                     //创建文件路径
                     File filepath = new File(path);
-                    if(!filepath.exists()){
+                    if (!filepath.exists()) {
                         filepath.mkdirs();
                     }
                     file.transferTo(dir);//MultipartFile的内置方法transferTo()
@@ -265,9 +265,6 @@ public class TestController {
 
         return new R<String>("图片上传成功！fuck you!");
     }
-
-
-
 
 
 }
