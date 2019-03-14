@@ -27,10 +27,10 @@ public class TestController2 {
 
     //表单需要username、name、password、email
     @PostMapping(value = "/register")
-    public R<String> register(SysUser sysUser, MultipartFile file) {
+    public R<String> register(SysUser sysUser, MultipartFile files) {
         //先保存个人图片，再保存个人信息
         try {
-            if (file.isEmpty()) {
+            if (files.isEmpty()) {
                 logger.info("文件为空！");
             }
 
@@ -38,7 +38,7 @@ public class TestController2 {
             String date = df.format(new Date());
             String path = "/var/uploaded_files/" + date + "/";
             UUID uuid = UUID.randomUUID();
-            String originalFilename = file.getOriginalFilename();//------API
+            String originalFilename = files.getOriginalFilename();//------API
             String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
             String fileName = uuid.toString() + extendName;
             //创建一个文件
@@ -50,7 +50,7 @@ public class TestController2 {
                 System.out.println();//无用
             }
 
-            file.transferTo(dir);//MultipartFile的内置方法transferTo()
+            files.transferTo(dir);//MultipartFile的内置方法transferTo()
             //把图片本身保存到服务器，然后写代码把图片URL保存到对应的数据库表中
 
         } catch (Exception e) {
