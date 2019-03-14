@@ -240,12 +240,22 @@ public class TestController {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     String date = df.format(new Date());
                     String path = "/var/uploaded_files/"+date+"/";
-                    byte[] bytes = file.getBytes();
+                    UUID uuid = UUID.randomUUID();
+                    String originalFilename = file.getOriginalFilename();//------API
+                    String extendName = originalFilename.substring(originalFilename.lastIndexOf("."), originalFilename.length());
+                    String fileName = uuid.toString() + extendName;
+                    //创建一个文件
+                    File dir = new File(path, fileName);
+                    //创建文件路径
+                    File filepath = new File(path);
+                    if(!filepath.exists()){
+                        filepath.mkdirs();
+                    }
+                    file.transferTo(dir);//MultipartFile的内置方法transferTo()
 
-                    stream = new BufferedOutputStream(new FileOutputStream(new File(path, file.getOriginalFilename())));
-                    stream.write(bytes);
-                    stream.close();
-
+//                    stream = new BufferedOutputStream(new FileOutputStream(new File(path, file.getOriginalFilename())));
+//                    stream.write(bytes);
+//                    stream.close();
                 } catch (Exception e) {
                     logger.info(e.getMessage());
                     return new R<>(e);
