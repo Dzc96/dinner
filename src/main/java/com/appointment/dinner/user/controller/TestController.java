@@ -216,6 +216,10 @@ public class TestController {
         return new R<>("成功了，fuckyou1");
     }
 
+    @GetMapping("/fuck2")
+    public R<String> getccc2(){
+        return new R<>("3月14日测试成功");
+    }
 
 
 }
