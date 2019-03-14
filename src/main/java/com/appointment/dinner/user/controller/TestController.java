@@ -205,7 +205,7 @@ public class TestController {
 
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return new R<>("上传图片失败");
+            return new R<>(e);
         }
 
         return new R<String>("图片上传成功！fuck you!");
