@@ -36,6 +36,11 @@ spring:
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
     # �ϲ����DruidDataSource�ļ������
     #useGlobalDataSourceStat: true
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 200MB
+
 pagehelper:
   helper-dialect: mysql
   reasonable: true
@@ -43,3 +48,5 @@ pagehelper:
   params: count=countSql
 logging:
   path: /var/mylog
+
+
